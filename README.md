@@ -39,3 +39,5 @@ $ rails server
 
 For more information, see the
 [*Ruby on Rails Tutorial* book](http://www.railstutorial.org/book).
+
+App deployed with Heroku, find it [here](https://warm-woodland-68895.herokuapp.com/).
