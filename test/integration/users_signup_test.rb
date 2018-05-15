@@ -47,4 +47,22 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_template 'users/show'
     assert is_logged_in?
   end
+
+  test "index and show pages don't display unactivated users" do
+    # Sign up a new user
+    post users_path, params: { user: { name:  "Example User",
+                                       email: "user@example.com",
+                                       password:              "password",
+                                       password_confirmation: "password" } }
+    user = assigns(:user)
+    # Log in as someone else
+    log_in_as(users(:michael))
+    # Load the last page in the index
+    get users_path, params: { page: User.paginate(page: 1).total_pages }
+    # Ensure the unactivated user doesn't show up
+    assert_select "a[href=?]", user_path(user), count: 0
+    # Ensure the unactivated user's show page redirects to root
+    get user_path(user)
+    assert_redirected_to root_url
+  end
 end
